@@ -19,6 +19,7 @@ describe('slugify should', () => {
   test.each([
     ['po po', 'po-po'],
     ['po  po', 'po-po'],
+    ['po  po  po', 'po-po-po'],
     ['po\t po', 'po-po'],
     ['po...po', 'po-po'],
     ['po.!.po', 'po-po'],
@@ -31,8 +32,8 @@ describe('slugify should', () => {
     ['popo  ', 'popo'],
     [' popo', 'popo'],
     ['  popo', 'popo'],
-    ['popo!', 'popo'],
-    ['!popo', 'popo'],
+    ['popo! ?', 'popo'],
+    [' !popo', 'popo'],
   ])('remove trailing "-" from %p into %p', (input, expected) => {
     expect(slugify(input)).toEqual(expected);
   });
@@ -55,7 +56,7 @@ function slugify(input: string): string {
   const transformed = input
     .toLocaleLowerCase()
     .replace(/\W/g, '-')
-    .replace(/-{2,}/, '-')
+    .replace(/-{2,}/g, '-')
     .replace(/-$/, '')
     .replace(/^-/, '');
   if (transformed === '') {
