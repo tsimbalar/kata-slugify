@@ -1,0 +1,10 @@
+{
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "jest.autoRun": "off",
+  "jest.testExplorer": {
+      "enabled": false
+  }
+}

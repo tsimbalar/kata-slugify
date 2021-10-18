@@ -1,0 +1,19 @@
+{
+  "name": "kata-ts-template",
+  "version": "1.0.0",
+  "description": "Template for katas in TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "check": "tsc --noEmit --noErrorTruncation"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "jest": "^27.3.0",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
+  }
+}
