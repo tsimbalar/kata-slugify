@@ -38,11 +38,27 @@ describe('slugify should', () => {
     expect(slugify(input)).toEqual(expected);
   });
 
+  test.each([
+    ['à', 'a'],
+    ['á', 'a'],
+    ['â', 'a'],
+    ['ä', 'a'],
+    ['å', 'a'],
+    ['ê', 'e'],
+    ['ñ', 'n'],
+  ])('remove accents from %p into %p', (input, expected) => {
+    expect(slugify(input)).toEqual(expected);
+  });
+
   describe('Acceptance tests (examples)', () => {
     test.each([
       ['This is my article', 'this-is-my-article', 'example #1'],
       ["You won't believe this...", 'you-won-t-believe-this', 'example #2'],
       ["Do this. Don't do that!", 'do-this-don-t-do-that', 'example #3'],
+      // extended edge cases
+      ['Olé ¿ que pasa peña ?', 'ole-que-pasa-pena', 'extended Castellano example'],
+      ['À ma façon, je suis écoeuré ...', 'a-ma-facon-je-suis-ecoeure', 'extended French example'],
+      ['Hur är det? Hur mår du?', 'hur-ar-det-hur-mar-du', 'extended Swedish example'],
     ])('transform %p into %p (because %s)', (input, expected, reason) => {
       expect(slugify(input)).toEqual(expected);
     });
@@ -54,8 +70,10 @@ function slugify(input: string): string {
     return '';
   }
   const transformed = input
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
     .toLocaleLowerCase()
-    .replace(/\W/g, '-')
+    .replace(/[^\p{Letter}\p{Number}]/gu, '-')
     .replace(/-{2,}/g, '-')
     .replace(/-$/, '')
     .replace(/^-/, '');
