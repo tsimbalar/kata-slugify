@@ -19,6 +19,16 @@ describe('examples - PBT', () => {
     );
   });
 
+  test('trim is stable', () => {
+    fc.assert(
+      fc.property(fc.fullUnicodeString(), (input) => {
+        const trimmed = myTrim(input);
+        const doubleTrimmed = myTrim(trimmed);
+        expect(doubleTrimmed).toEqual(trimmed);
+      }),
+    );
+  });
+
   test('removed final whitespace', () => {
     fc.assert(
       fc.property(
@@ -30,10 +40,24 @@ describe('examples - PBT', () => {
       ),
     );
   });
+
+  test('does not impact strings without whitespace', () => {
+    fc.assert(
+      fc.property(
+        fc.fullUnicodeString().filter((t) => containsWhitespace(t)),
+        (input) => {
+          expect(myTrim(input)).toEqual(input);
+        },
+      ),
+    );
+  });
 });
 
 function myTrim(input: string): string {
-  return '';
+  if (input.length === 0) {
+    return '';
+  }
+  return input.substring(0, input.length - 1);
 }
 
 function containsWhitespace(input: string): boolean {
